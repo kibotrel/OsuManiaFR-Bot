@@ -1,0 +1,8 @@
+{
+  "execMap": {
+    "js": "node --env-file=.env"
+  },
+  "ext": "json,js",
+  "ignore": ["node_modules"],
+  "watch": ["src", ".env"]
+}

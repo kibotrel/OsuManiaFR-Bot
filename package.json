@@ -1,0 +1,30 @@
+{
+  "author": "@kibotrel",
+  "description": "Discord bot to for osu!mania french community",
+  "devDependencies": {
+    "nodemon": "3.1.0"
+  },
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "homepage": "https://github.com/kibotrel/OsuManiaFR-Bot",
+  "license": "Unlicense",
+  "keywords": [],
+  "main": "src/index.js",
+  "name": "osumaniafr-bot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kibotrel/OsuManiaFR-Bot"
+  },
+  "scripts": {
+    "dev": "nodemon --config nodemon.json src/index.js",
+    "start": "node src/index.js"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "dependencies": {
+    "@upstash/redis": "^1.34.3",
+    "discord.js": "14.14.1",
+    "discordbox": "1.1.0"
+  }
+}
