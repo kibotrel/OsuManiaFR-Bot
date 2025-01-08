@@ -1,6 +1,8 @@
 import { Events } from 'discord.js';
 
-import { cache } from '../dependencies/cacheDependency.js';
+import { CONFIGURATION_CACHE_KEY } from '#src/constants/cacheConstants.js';
+import { WelcomeMessageVariables } from '#src/constants/interactionConstants.js';
+import { cache } from '#src/dependencies/cacheDependency.js';
 
 export const guildMemberAddEvent = () => {
   return {
@@ -8,7 +10,7 @@ export const guildMemberAddEvent = () => {
 
     callback: async (member) => {
       const { rulesChannelId, template, welcomeChannelId } = await cache.get(
-        'configuration',
+        CONFIGURATION_CACHE_KEY,
       );
       const welcomeChannel = await member.guild.channels.fetch(
         welcomeChannelId,
@@ -16,8 +18,11 @@ export const guildMemberAddEvent = () => {
 
       await welcomeChannel.send(
         template
-          ?.replace('{{user}}', `<@${member.user.id}>`)
-          ?.replace('{{rulesChannel}}', `<#${rulesChannelId}>`),
+          ?.replace(
+            WelcomeMessageVariables.RulesChannel,
+            `<@${member.user.id}>`,
+          )
+          ?.replace(WelcomeMessageVariables.User, `<#${rulesChannelId}>`),
       );
     },
   };

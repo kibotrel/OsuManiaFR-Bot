@@ -1,19 +1,25 @@
-import { cache } from '../dependencies/cacheDependency.js';
+import { CONFIGURATION_CACHE_KEY } from '#src/constants/cacheConstants.js';
+import {
+  Actions,
+  WelcomeMessageVariables,
+} from '#src/constants/interactionConstants.js';
+
+import { cache } from '#src/dependencies/cacheDependency.js';
 
 export const welcomeMessageSetupModal = {
-  action: 'welcome-message-modal',
+  action: Actions.WelcomeMessageModal,
 
   callback: async (interraction, metadata) => {
     const { userId, additionalData, modalFields } = metadata;
     const channelIds = additionalData.split('-');
-    const currentConfiguration = await cache.get('configuration');
+    const currentConfiguration = await cache.get(CONFIGURATION_CACHE_KEY);
     const [rulesChannelId, template, welcomeChannelId] = [
       channelIds.at(0) || currentConfiguration.rulesChannelId,
       modalFields.get('template') || currentConfiguration.template,
       channelIds.at(1) || currentConfiguration.welcomeChannelId,
     ];
 
-    await cache.set('configuration', {
+    await cache.set(CONFIGURATION_CACHE_KEY, {
       rulesChannelId,
       template,
       welcomeChannelId,
@@ -21,8 +27,11 @@ export const welcomeMessageSetupModal = {
 
     return interraction.reply({
       content: `Example welcome message that will be posted in <#${welcomeChannelId}>:\n\n${template
-        ?.replace('{{user}}', `<@${userId}>`)
-        ?.replace('{{rulesChannel}}', `<#${rulesChannelId}>`)}`,
+        ?.replace(WelcomeMessageVariables.User, `<@${userId}>`)
+        ?.replace(
+          WelcomeMessageVariables.RulesChannel,
+          `<#${rulesChannelId}>`,
+        )}`,
       ephemeral: true,
     });
   },

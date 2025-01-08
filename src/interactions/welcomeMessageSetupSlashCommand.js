@@ -6,7 +6,13 @@ import {
   TextInputStyle,
 } from 'discord.js';
 import { generateCustomId } from 'discordbox';
-import { cache } from '../dependencies/cacheDependency.js';
+
+import { CONFIGURATION_CACHE_KEY } from '#src/constants/cacheConstants.js';
+import {
+  Actions,
+  WelcomeMessageVariables,
+} from '#src/constants/interactionConstants.js';
+import { cache } from '#src/dependencies/cacheDependency.js';
 
 export const welcomeMessageSetupSlashCommand = {
   action: new SlashCommandBuilder()
@@ -21,15 +27,16 @@ export const welcomeMessageSetupSlashCommand = {
         .setName('rules_channel'),
     )
     .setDescription('Set up a welcome message for new members.')
-    .setName('welcome-message-setup'),
+    .setName(Actions.WelcomeMessageSlashCommand),
   callback: async (interraction, metadata) => {
-    const configuration = await cache.get('configuration');
-    const { welcome_channel, rules_channel } = metadata.commandArguments;
+    const configuration = await cache.get(CONFIGURATION_CACHE_KEY);
+    const { welcome_channel: welcomeChannel, rules_channel: rulesChannel } =
+      metadata.commandArguments;
 
     const modal = new ModalBuilder()
       .setCustomId(
-        generateCustomId('welcome-message-modal', {
-          additionalData: `${rules_channel}-${welcome_channel}`,
+        generateCustomId(Actions.WelcomeMessageModal, {
+          additionalData: `${rulesChannel}-${welcomeChannel}`,
         }),
       )
       .setTitle('Set message template !')
@@ -39,7 +46,8 @@ export const welcomeMessageSetupSlashCommand = {
             .setCustomId('template')
             .setLabel('Set your welcome message template')
             .setPlaceholder(
-              configuration.template ?? 'Welcome to {{user}} on our server!',
+              configuration.template ??
+                `Welcome to ${WelcomeMessageVariables.User} on our server!`,
             )
             .setRequired(false)
             .setStyle(TextInputStyle.Paragraph),
