@@ -1,7 +1,7 @@
 import { GatewayIntentBits } from 'discord.js';
 import { DiscordBot } from 'discordbox';
 
-import { environment } from '../configurations/environmentConfiguration.js';
+import { environment } from '#src/configurations/environmentConfiguration.js';
 
 export const bot = new DiscordBot({
   gatewayIntents: [
