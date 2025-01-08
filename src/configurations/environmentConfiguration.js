@@ -6,7 +6,7 @@ export const environment = {
   discordBotSupportUserId: process.env.DISCORD_BOT_SUPPORT_USER_ID ?? '',
   discordBotToken: process.env.DISCORD_BOT_TOKEN ?? '',
   logLevel:
-    process.env.NODE_ENV === 'production' ? LogLevel.Error : LogLevel.Debug,
+    process.env.NODE_ENV === 'production' ? LogLevel.Error : LogLevel.Info,
   nodeEnv: process.env.NODE_ENV ?? '',
   version: '0.0.1',
 };
