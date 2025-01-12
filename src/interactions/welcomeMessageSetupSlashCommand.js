@@ -7,12 +7,10 @@ import {
 } from 'discord.js';
 import { generateCustomId } from 'discordbox';
 
-import { CONFIGURATION_CACHE_KEY } from '#src/constants/cacheConstants.js';
 import {
   Actions,
   WelcomeMessageVariables,
 } from '#src/constants/interactionConstants.js';
-import { cache } from '#src/dependencies/cacheDependency.js';
 
 export const welcomeMessageSetupSlashCommand = {
   action: new SlashCommandBuilder()
@@ -29,7 +27,6 @@ export const welcomeMessageSetupSlashCommand = {
     .setDescription('Set up a welcome message for new members.')
     .setName(Actions.WelcomeMessageSlashCommand),
   callback: async (interraction, metadata) => {
-    const configuration = await cache.get(CONFIGURATION_CACHE_KEY);
     const { welcome_channel: welcomeChannel, rules_channel: rulesChannel } =
       metadata.commandArguments;
 
@@ -46,8 +43,7 @@ export const welcomeMessageSetupSlashCommand = {
             .setCustomId('template')
             .setLabel('Set your welcome message template')
             .setPlaceholder(
-              configuration.template ??
-                `Welcome to ${WelcomeMessageVariables.User} on our server!`,
+              `Welcome to ${WelcomeMessageVariables.User} on our server!`,
             )
             .setRequired(false)
             .setStyle(TextInputStyle.Paragraph),
