@@ -6,4 +6,5 @@ export const Actions = {
 export const WelcomeMessageVariables = {
   RulesChannel: '{{rulesChannel}}',
   User: '{{user}}',
+  WelcomeChannel: '{{welcomeChannel}}',
 };

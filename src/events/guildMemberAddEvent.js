@@ -22,7 +22,11 @@ export const guildMemberAddEvent = () => {
             WelcomeMessageVariables.RulesChannel,
             `<@${member.user.id}>`,
           )
-          ?.replace(WelcomeMessageVariables.User, `<#${rulesChannelId}>`),
+          ?.replace(WelcomeMessageVariables.User, `<#${rulesChannelId}>`)
+          ?.replace(
+            WelcomeMessageVariables.WelcomeChannel,
+            `<#${welcomeChannelId}>`,
+          ),
       );
     },
   };
