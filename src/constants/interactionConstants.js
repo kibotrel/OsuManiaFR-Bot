@@ -1,4 +1,5 @@
 export const Actions = {
+  ExportMembersSlashCommand: 'export-members',
   WelcomeMessageModal: 'welcome-message-modal',
   WelcomeMessageSlashCommand: 'welcome-message-setup',
 };
