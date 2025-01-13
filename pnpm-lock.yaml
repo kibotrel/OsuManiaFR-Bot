@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@upstash/redis':
-        specifier: ^1.34.3
+        specifier: 1.34.3
         version: 1.34.3
       discord.js:
-        specifier: 14.14.1
-        version: 14.14.1
+        specifier: 14.17.3
+        version: 14.17.3
       discordbox:
         specifier: 1.1.0
         version: 1.1.0
@@ -70,6 +70,10 @@ packages:
 
   '@sapphire/snowflake@3.5.1':
     resolution: {integrity: sha512-BxcYGzgEsdlG0dKAyOm0ehLGm2CafIrfQTZGWgkfKYbj+pNNsorZ7EotuZukc2MT70E0UbppVbtpBrqpzVzjNA==}
+    engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
+
+  '@sapphire/snowflake@3.5.3':
+    resolution: {integrity: sha512-jjmJywLAFoWeBi1W7994zZyiNWPIiqRRNAmSERxyg93xRGzNYvGjlZ0gR6x0F4gPRi2+0O6S71kOZYyr3cxaIQ==}
     engines: {node: '>=v14.0.0', npm: '>=7.0.0'}
 
   '@sapphire/snowflake@3.5.5':
@@ -142,6 +146,10 @@ packages:
   discord.js@14.14.1:
     resolution: {integrity: sha512-/hUVzkIerxKHyRKopJy5xejp4MYKDPTszAnpYxzVVv4qJYf+Tkt+jnT2N29PIPschicaEEpXwF2ARrTYHYwQ5w==}
     engines: {node: '>=16.11.0'}
+
+  discord.js@14.17.3:
+    resolution: {integrity: sha512-8/j8udc3CU7dz3Eqch64UaSHoJtUT6IXK4da5ixjbav4NAXJicloWswD/iwn1ImZEMoAV3LscsdO0zhBh6H+0Q==}
+    engines: {node: '>=18'}
 
   discordbox@1.1.0:
     resolution: {integrity: sha512-y6+sH9qkXIzBARgpHKqzeZOijaxLgquq2fLzJFT+Fp+lqSn7OGi8y0K2GnRc7+dpsfQnkqhMal2y+p1JaAyGNg==}
@@ -353,6 +361,8 @@ snapshots:
 
   '@sapphire/snowflake@3.5.1': {}
 
+  '@sapphire/snowflake@3.5.3': {}
+
   '@sapphire/snowflake@3.5.5': {}
 
   '@types/node@20.12.11':
@@ -435,6 +445,24 @@ snapshots:
       tslib: 2.6.2
       undici: 5.27.2
       ws: 8.14.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
+  discord.js@14.17.3:
+    dependencies:
+      '@discordjs/builders': 1.10.0
+      '@discordjs/collection': 1.5.3
+      '@discordjs/formatters': 0.6.0
+      '@discordjs/rest': 2.4.2
+      '@discordjs/util': 1.1.1
+      '@discordjs/ws': 1.2.0
+      '@sapphire/snowflake': 3.5.3
+      discord-api-types: 0.37.115
+      fast-deep-equal: 3.1.3
+      lodash.snakecase: 4.1.1
+      tslib: 2.8.1
+      undici: 6.19.8
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate

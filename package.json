@@ -27,8 +27,8 @@
   "type": "module",
   "version": "0.0.1",
   "dependencies": {
-    "@upstash/redis": "^1.34.3",
-    "discord.js": "14.14.1",
+    "@upstash/redis": "1.34.3",
+    "discord.js": "14.17.3",
     "discordbox": "1.1.0"
   }
 }
