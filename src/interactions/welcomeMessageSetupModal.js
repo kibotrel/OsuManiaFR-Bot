@@ -9,7 +9,7 @@ import { cache } from '#src/dependencies/cacheDependency.js';
 export const welcomeMessageSetupModal = {
   action: Actions.WelcomeMessageModal,
 
-  callback: async (interraction, metadata) => {
+  callback: async (interaction, metadata) => {
     const { userId, additionalData, modalFields } = metadata;
     const channelIds = additionalData.split('-');
     const currentConfiguration = await cache.get(CONFIGURATION_CACHE_KEY);
@@ -25,7 +25,7 @@ export const welcomeMessageSetupModal = {
       welcomeChannelId,
     });
 
-    return interraction.reply({
+    return interaction.reply({
       content:
         `Example welcome message that will be posted in <#${welcomeChannelId}>:\n\n${template
           ?.replace(WelcomeMessageVariables.User, `<@${userId}>`)

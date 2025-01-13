@@ -26,7 +26,8 @@ export const welcomeMessageSetupSlashCommand = {
     )
     .setDescription('Set up a welcome message for new members.')
     .setName(Actions.WelcomeMessageSlashCommand),
-  callback: async (interraction, metadata) => {
+
+  callback: async (interaction, metadata) => {
     const { welcome_channel: welcomeChannel, rules_channel: rulesChannel } =
       metadata.commandArguments;
 
@@ -50,6 +51,6 @@ export const welcomeMessageSetupSlashCommand = {
         ),
       );
 
-    return interraction.showModal(modal);
+    return interaction.showModal(modal);
   },
 };
