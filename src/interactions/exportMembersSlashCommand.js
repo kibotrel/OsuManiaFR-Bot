@@ -27,7 +27,7 @@ export const exportMembersSlashCommand = {
       .map((member) => {
         return {
           accountHandle: member.user.username,
-          accountUsername: member.user.globalName,
+          accountUsername: member.user.globalName ?? '',
           guildUsername: member.nickname ?? '',
         };
       });
