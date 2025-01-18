@@ -27,8 +27,8 @@ export const welcomeMessageSetupModal = {
 
     return interaction.reply({
       content: `Example welcome message that will be posted in <#${welcomeChannelId}>:\n\n${template
-        ?.replace(WelcomeMessageVariables.User, `<@${userId}>`)
         ?.replace(WelcomeMessageVariables.RulesChannel, `<#${rulesChannelId}>`)
+        ?.replace(WelcomeMessageVariables.User, `<@${userId}>`)
         ?.replace(
           WelcomeMessageVariables.WelcomeChannel,
           `<#${welcomeChannelId}>`,

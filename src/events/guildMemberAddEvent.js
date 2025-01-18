@@ -20,9 +20,9 @@ export const guildMemberAddEvent = () => {
         template
           ?.replace(
             WelcomeMessageVariables.RulesChannel,
-            `<@${member.user.id}>`,
+            `<#${rulesChannelId}>`,
           )
-          ?.replace(WelcomeMessageVariables.User, `<#${rulesChannelId}>`)
+          ?.replace(WelcomeMessageVariables.User, `<@${member.user.id}>`)
           ?.replace(
             WelcomeMessageVariables.WelcomeChannel,
             `<#${welcomeChannelId}>`,
