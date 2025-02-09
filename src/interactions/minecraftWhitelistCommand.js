@@ -1,56 +1,129 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 import { environment } from '#src/configurations/environmentConfiguration.js';
+import { MINECRAFT_WHITELIST_CACHE_KEY } from '#src/constants/cacheConstants.js';
+import { BASE_EMBED_COLOR } from '#src/constants/embedConstants.js';
 import { Actions } from '#src/constants/interactionConstants.js';
+import { cache } from '#src/dependencies/cacheDependency.js';
+
+const MinecraftWhitelistSubcommands = {
+  Add: 'add',
+  Show: 'show',
+};
+
+const minecraftWhitelistSubcommandAddCallback = async (
+  interaction,
+  metadata,
+) => {
+  const { userId: addedByUserId } = metadata;
+  const discordUser = interaction.options.getUser('discord_user') ?? { id: '' };
+
+  const minecraftUsername = interaction.options.getString('minecraft_username');
+  const minecraftWhitelistEndpoint = new URL(
+    'add.php',
+    environment.minecraftServerUrl,
+  );
+
+  minecraftWhitelistEndpoint.searchParams.append('username', minecraftUsername);
+  minecraftWhitelistEndpoint.searchParams.append(
+    'k',
+    environment.minecraftServerKey,
+  );
+
+  const response = await fetch(minecraftWhitelistEndpoint);
+
+  if (response.status !== 200) {
+    return interaction.followUp({
+      content: 'Failed to add user to the whitelist.',
+      ephemeral: true,
+    });
+  }
+
+  await cache.sadd(
+    MINECRAFT_WHITELIST_CACHE_KEY,
+    `${discordUser.id}:${minecraftUsername}:${addedByUserId}`,
+  );
+
+  return interaction.followUp({
+    content: `Added ${minecraftUsername} to the whitelist.`,
+    ephemeral: true,
+  });
+};
+
+const minecraftWhitelistSubcommandShowCallback = async (interaction) => {
+  const whitelist = (await cache.smembers(MINECRAFT_WHITELIST_CACHE_KEY)).map(
+    (entry) => {
+      const [discordUser, minecraftUsername, addedByUser] = entry
+        .split(':')
+        .map((member, index) => {
+          return index % 2 ? member : member ? `<@${member}>` : 'Unknown';
+        });
+
+      if (discordUser === addedByUser) {
+        return `${discordUser} (${minecraftUsername})`;
+      }
+
+      return `${discordUser} (${minecraftUsername}) added by ${addedByUser}`;
+    },
+  );
+
+  const whitelistEmbed = new EmbedBuilder()
+    .setColor(BASE_EMBED_COLOR)
+    .setDescription(
+      whitelist.length
+        ? whitelist.join('\n')
+        : 'No user currently whitelisted.',
+    )
+    .setFooter({ text: `v${environment.version}` })
+    .setTimestamp()
+    .setTitle('Minecraft server whitelist');
+
+  return interaction.followUp({
+    embeds: [whitelistEmbed],
+    ephemeral: true,
+  });
+};
 
 export const minecraftWhitelistCommand = {
   action: new SlashCommandBuilder()
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('add')
+        .setName(MinecraftWhitelistSubcommands.Add)
         .setDescription('Add a user to the whitelist.')
         .addStringOption((option) =>
           option
-            .setDescription('User that will be whitelisted.')
+            .setDescription('Minecraft username that will be whitelisted.')
             .setName('minecraft_username')
             .setRequired(true),
+        )
+        .addUserOption((option) =>
+          option
+            .setDescription('User that will be whitelisted.')
+            .setName('discord_user'),
         ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName(MinecraftWhitelistSubcommands.Show)
+        .setDescription('Show the whitelist.'),
     )
     .setDescription("Manage this community's Minecraft server whitelist.")
     .setName(Actions.MinecraftWhitelistSlashCommand),
 
-  callback: async (interaction) => {
-    const minecraftUsername =
-      interaction.options.getString('minecraft_username');
-
+  callback: async (interaction, metadata) => {
     await interaction.deferReply({ ephemeral: true });
 
-    const minecraftWhitelistEndpoint = new URL(
-      'add.php',
-      environment.minecraftServerUrl,
-    );
+    const subcommand = interaction.options.getSubcommand();
 
-    minecraftWhitelistEndpoint.searchParams.append(
-      'username',
-      minecraftUsername,
-    );
-    minecraftWhitelistEndpoint.searchParams.append(
-      'k',
-      environment.minecraftServerKey,
-    );
+    switch (subcommand) {
+      case MinecraftWhitelistSubcommands.Add:
+        return minecraftWhitelistSubcommandAddCallback(interaction, metadata);
 
-    const response = await fetch(minecraftWhitelistEndpoint);
+      case MinecraftWhitelistSubcommands.Show:
+        return minecraftWhitelistSubcommandShowCallback(interaction);
 
-    if (response.status !== 200) {
-      return interaction.followUp({
-        content: 'Failed to add user to the whitelist.',
-        ephemeral: true,
-      });
+      default:
+        break;
     }
-
-    return interaction.followUp({
-      content: `Added ${minecraftUsername} to the whitelist.`,
-      ephemeral: true,
-    });
   },
 };
