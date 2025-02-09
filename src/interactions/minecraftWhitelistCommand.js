@@ -17,6 +17,8 @@ const minecraftWhitelistSubcommandAddCallback = async (
 ) => {
   const { userId: addedByUserId } = metadata;
   const discordUser = interaction.options.getUser('discord_user') ?? { id: '' };
+  const isOwner = interaction.options.getBoolean('is_owner');
+  const discordOwnerId = isOwner ? addedByUserId : discordUser.id;
 
   const minecraftUsername = interaction.options.getString('minecraft_username');
   const minecraftWhitelistEndpoint = new URL(
@@ -41,7 +43,7 @@ const minecraftWhitelistSubcommandAddCallback = async (
 
   await cache.sadd(
     MINECRAFT_WHITELIST_CACHE_KEY,
-    `${discordUser.id}:${minecraftUsername}:${addedByUserId}`,
+    `${discordOwnerId}:${minecraftUsername}:${addedByUserId}`,
   );
 
   return interaction.followUp({
@@ -101,6 +103,12 @@ export const minecraftWhitelistCommand = {
           option
             .setDescription('Minecraft username that will be whitelisted.')
             .setName('minecraft_username')
+            .setRequired(true),
+        )
+        .addBooleanOption((option) =>
+          option
+            .setDescription('Is this your minecraft account?')
+            .setName('is_owner')
             .setRequired(true),
         )
         .addUserOption((option) =>
