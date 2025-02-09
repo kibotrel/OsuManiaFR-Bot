@@ -50,9 +50,17 @@ const minecraftWhitelistSubcommandAddCallback = async (
   });
 };
 
+const sortByMinecraftUsername = (a, b) => {
+  const [, minecraftUsernameA] = a.split(':');
+  const [, minecraftUsernameB] = b.split(':');
+
+  return minecraftUsernameA.localeCompare(minecraftUsernameB);
+};
+
 const minecraftWhitelistSubcommandShowCallback = async (interaction) => {
-  const whitelist = (await cache.smembers(MINECRAFT_WHITELIST_CACHE_KEY)).map(
-    (entry) => {
+  const whitelist = (await cache.smembers(MINECRAFT_WHITELIST_CACHE_KEY))
+    .sort(sortByMinecraftUsername)
+    .map((entry) => {
       const [discordUser, minecraftUsername, addedByUser] = entry
         .split(':')
         .map((member, index) => {
@@ -64,8 +72,7 @@ const minecraftWhitelistSubcommandShowCallback = async (interaction) => {
       }
 
       return `${discordUser} (${minecraftUsername}) added by ${addedByUser}`;
-    },
-  );
+    });
 
   const whitelistEmbed = new EmbedBuilder()
     .setColor(BASE_EMBED_COLOR)
