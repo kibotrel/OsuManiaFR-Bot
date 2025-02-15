@@ -91,7 +91,7 @@ const minecraftWhitelistSubcommandShowCallback = async (interaction) => {
     )
     .setFooter({ text: `v${environment.version}` })
     .setTimestamp()
-    .setTitle('Minecraft server whitelist');
+    .setTitle(`Minecraft server whitelist (${whitelist.length})`);
 
   return interaction.followUp({
     embeds: [whitelistEmbed],

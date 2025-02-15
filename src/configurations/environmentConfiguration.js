@@ -11,5 +11,5 @@ export const environment = {
   minecraftServerKey: process.env.MINECRAFT_SERVER_KEY ?? '',
   minecraftServerUrl: process.env.MINECRAFT_SERVER_URL ?? '',
   nodeEnv: process.env.NODE_ENV ?? '',
-  version: '0.1.3',
+  version: '0.1.4',
 };
