@@ -17,8 +17,8 @@ const minecraftWhitelistSubcommandAddCallback = async (
 ) => {
   const { userId: addedByUserId } = metadata;
   const discordUser = interaction.options.getUser('discord_user') ?? { id: '' };
-  const isOwner = interaction.options.getBoolean('is_owner');
-  const discordOwnerId = isOwner ? addedByUserId : discordUser.id;
+  const isAccountOwner = interaction.options.getBoolean('is_accont_owner');
+  const discordOwnerId = isAccountOwner ? addedByUserId : discordUser.id;
 
   const minecraftUsername = interaction.options.getString('minecraft_username');
   const minecraftWhitelistEndpoint = new URL(
@@ -45,6 +45,12 @@ const minecraftWhitelistSubcommandAddCallback = async (
     MINECRAFT_WHITELIST_CACHE_KEY,
     `${discordOwnerId}:${minecraftUsername}:${addedByUserId}`,
   );
+
+  if (discordOwnerId) {
+    const guildMember = await interaction.guild.members.fetch(discordOwnerId);
+
+    await guildMember.roles.add(environment.minecraftRoleId);
+  }
 
   return interaction.followUp({
     content: `Added ${minecraftUsername} to the whitelist.`,
@@ -108,7 +114,7 @@ export const minecraftWhitelistCommand = {
         .addBooleanOption((option) =>
           option
             .setDescription('Is this your minecraft account?')
-            .setName('is_owner')
+            .setName('is_account_owner')
             .setRequired(true),
         )
         .addUserOption((option) =>

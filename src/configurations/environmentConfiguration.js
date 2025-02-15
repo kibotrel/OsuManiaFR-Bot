@@ -7,8 +7,9 @@ export const environment = {
   discordBotToken: process.env.DISCORD_BOT_TOKEN ?? '',
   logLevel:
     process.env.NODE_ENV === 'production' ? LogLevel.Error : LogLevel.Info,
+  minecraftRoleId: process.env.MINECRAFT_ROLE_ID ?? '',
   minecraftServerKey: process.env.MINECRAFT_SERVER_KEY ?? '',
   minecraftServerUrl: process.env.MINECRAFT_SERVER_URL ?? '',
   nodeEnv: process.env.NODE_ENV ?? '',
-  version: '0.1.2',
+  version: '0.1.3',
 };
