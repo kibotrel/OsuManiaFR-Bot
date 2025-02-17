@@ -15,15 +15,7 @@ This Discord bot features are accessible through [Disord Slash Commands](https:/
 >
 > This command as no options.
 
-Export Server's member list to a CSV file. The CSV file will contain the following columns:
-
-|    Column Name    |          Description           |
-| :---------------: | :----------------------------: |
-|  `accountHandle`  |       The account handle       |
-| `accountUsername` |  The global username, if set   |
-|  `guildUsername`  | This server's username, if set |
-
-This command is useful for server administrators to keep track of osu! username changes for example.
+Export Server's member list to a CSV file. This command is useful for server administrators to keep track of osu! username changes for example.
 
 ### `/minecraft-whitelist add`
 
