@@ -35,10 +35,9 @@ const minecraftWhitelistSubcommandAddCallback = async (
   const response = await fetch(minecraftWhitelistEndpoint);
 
   if (response.status !== 200) {
-    return interaction.followUp({
-      content: 'Failed to add user to the whitelist.',
-      ephemeral: true,
-    });
+    const errorReason = await response.text();
+
+    return interaction.followUp({ content: errorReason, ephemeral: true });
   }
 
   await cache.sadd(
